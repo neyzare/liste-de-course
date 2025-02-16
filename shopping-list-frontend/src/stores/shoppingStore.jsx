@@ -9,7 +9,7 @@ const useShoppingStore = create((set) => ({
     try {
         const response = await axios.get("http://127.0.0.1:8000/api/produits");
         console.log("Produits récupérés :", response.data);
-        set({ produits: response.data }); // Vérifie bien que `produits` est un tableau
+        set({ produits: response.data }); 
     } catch (error) {
         console.error("Erreur lors du chargement des produits", error);
     }
@@ -18,9 +18,9 @@ const useShoppingStore = create((set) => ({
    
 addProduit: async (produit) => {
     try {
-        const { nom, quantite } = produit;  // récupère 'nom' et 'quantite'
+        const { nom, quantite } = produit;  
         const response = await axios.post("http://127.0.0.1:8000/api/produits", {
-            name: nom,  // change 'nom' en 'name'
+            name: nom,  
             quantity: quantite,
         });
         set((state) => ({ produits: [...state.produits, response.data] }));

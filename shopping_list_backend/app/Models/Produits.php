@@ -9,6 +9,5 @@ class Produits extends Model
 {
     use HasFactory;
 
-   // Dans ton modèle Produits
     protected $fillable = ['name', 'quantity'];  
 }

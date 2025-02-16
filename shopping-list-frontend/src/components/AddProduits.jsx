@@ -17,13 +17,11 @@ export const AddProduits = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation pour le nom
     if (!nom.trim()) {
       setMessage("⚠️ Le nom du produit est obligatoire !");
       return;
     }
 
-    // Validation pour la quantité
     if (quantite <= 0) {
       setMessage("⚠️ La quantité doit être supérieure à zéro !");
       return;
@@ -33,8 +31,8 @@ export const AddProduits = () => {
 
     if (success) {
       setMessage("✅ Produit ajouté avec succès !");
-      setNom(""); // Réinitialise le nom
-      setQuantite(1); // Réinitialise la quantité à 1
+      setNom(""); 
+      setQuantite(1); 
     } else {
       setMessage("❌ Erreur lors de l'ajout du produit.");
     }
