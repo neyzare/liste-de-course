@@ -1,23 +1,22 @@
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useShoppingStore from "../stores/shoppingStore";
-import { useEffect } from "react";
 
 export const ShoppingList = () => {
-
+  const { produits, fetchProduits, deleteProduit } = useShoppingStore();
   const navigate = useNavigate();
 
-  const handleNavigate = (url) => {
-    navigate(url);
-};
-
-  const { produits, fetchProduits } = useShoppingStore();
+  useEffect(() => {
+    fetchProduits();
+  }, [fetchProduits]);
 
   useEffect(() => {
-      fetchProduits();
-}, []);
-  return(
+    console.log("Produits récupérés :", produits);
+  }, [produits]);  // Vérifie les produits à chaque changement
+  
+  return (
     <>
-       <div className="bg-white min-h-screen">
+      <div className="bg-white min-h-screen">
         <div className="navbar bg-base-100">
           <div className="navbar-start">
             <div className="dropdown">
@@ -49,17 +48,17 @@ export const ShoppingList = () => {
                 </li>
               </ul>
             </div>
-            <a  onClick={() => handleNavigate("/")} className="btn btn-ghost text-xl">MemoCourse</a>
+            <a onClick={() => navigate("/")} className="btn btn-ghost text-xl">MemoCourse</a>
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
-              <li onClick={() => handleNavigate('/modifier')}>
+              <li onClick={() => navigate('/modifier')}>
                 <a>Modifier course</a>
               </li>
-              <li onClick={() => handleNavigate('/liste-course')}>
+              <li onClick={() => navigate('/liste-course')}>
                 <a>Liste de course</a>
               </li>
-              <li onClick={() => handleNavigate('/add-produits')}>
+              <li onClick={() => navigate('/add-produits')}>
                 <a>Ajouter course</a>
               </li>
             </ul>
@@ -69,39 +68,46 @@ export const ShoppingList = () => {
           </div>
         </div>
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4 text-center text-black ">📦 Liste des Produits</h2>
-            <div className="overflow-x-auto">
-                <table className="table table-zebra w-full bg-base-100 shadow-xl rounded-lg">
-                    <thead className="bg-primary text-white">
-                        <tr>
-                            <th className="p-4">ID</th>
-                            <th className="p-4">Nom</th>
-                            <th className="p-4">Quantité</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {produits.length > 0 ? (
-                            produits.map((produit, index) => (
-                                <tr key={produit.id} className="hover">
-                                    <td className="p-4 font-medium">{produit.id}</td>
-                                    <td className="p-4">{produit.nom}</td>
-                                    <td className="p-4">{produit.quantite}</td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="3" className="text-center py-6 text-lg text-gray-500">
-                                    Aucun produit disponible 😕
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+          <h2 className="text-2xl font-bold mb-4 text-center text-black">📦 Liste des Produits</h2>
+          <div className="overflow-x-auto">
+            <table className="table table-zebra w-full bg-base-100 shadow-xl rounded-lg">
+              <thead className="bg-primary text-white">
+                <tr>
+                  <th className="p-4">ID</th>
+                  <th className="p-4">Nom</th>
+                  <th className="p-4">Quantité</th>
+                  <th className="p-4">Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {produits.length > 0 ? (
+                  produits.map((produit) => (
+                    <tr key={produit.id} className="hover">
+                      <td className="p-4 font-medium">{produit.id}</td>
+                      <td className="p-4 text-white">{produit.name}</td>
+                      <td className="p-4 text-white">{produit.quantity}</td>
+                      <td className="p-4">
+                        <button
+                          className="text-red-500 text-lg"
+                          onClick={() => deleteProduit(produit.id)}
+                        >
+                          ❌
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center py-6 text-lg text-gray-500">
+                      Aucun produit disponible 😕
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
-      
     </>
-  )
-}
+  );
+};
